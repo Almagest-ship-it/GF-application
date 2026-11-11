@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Girlfriend Application</title>
+  <script src="https://jsdelivr.net"></script>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #ffe6e6 0%, #ffb3c1 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow-x: hidden;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .container {
+      text-align: center;
+      padding: 30px 25px;
+      background: rgba(255, 255, 255, 0.94);
+      border-radius: 25px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      max-width: 95%;
+      width: 480px;
+      position: relative;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    #heartContainer {
+      font-size: 4rem;
+      margin-bottom: 10px;
+      animation: pulse 1.2s infinite;
+    }
+
+    h1 {
+      color: #ff4d6d;
+      font-size: 1.85rem;
+      margin: 5px 0 15px 0;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      color: #c9184a;
+      font-size: 1.2rem;
+      margin: 0 0 15px 0;
+    }
+
+    .slide-badge {
+      display: inline-block;
+      background: #ffe5ec;
+      color: #ff4d6d;
+      font-weight: bold;
+      font-size: 0.85rem;
+      padding: 5px 14px;
+      border-radius: 20px;
+      margin-bottom: 8px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      height: 170px;
+      width: 100%;
+    }
+
+    .buttons button {
+      padding: 15px 38px;
+      font-size: 1.25rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      position: absolute;
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), right 0.2s ease;
+    }
+
+    #yesBtn {
+      background-color: #4cc9f0;
+      color: white;
+      left: 14%;
+      z-index: 10;
+    }
+
+    #noBtn {
+      background-color: #ff4d6d;
+      color: white;
+      right: 14%;
+    }
+
+    .form-group {
+      text-align: left;
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      color: #c9184a;
+      margin-bottom: 5px;
+      font-size: 0.95rem;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="number"],
+    .form-group select {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid #ffccd5;
+      border-radius: 12px;
+      font-size: 1rem;
+      box-sizing: border-box;
+      outline: none;
+      background: #fff8f9;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: #ff4d6d;
+      background: #fff;
+    }
+
+    .mcq-box {
+      background: #fff0f3;
+      padding: 15px;
+      border-radius: 15px;
+      text-align: left;
+      border: 1px solid #ffccd5;
+      margin-bottom: 15px;
+    }
+
+    .mcq-box p {
+      margin: 0 0 12px 0;
+      font-weight: 700;
+      color: #c9184a;
+    }
+
+    .mcq-option {
+      display: block;
+      background: white;
+      padding: 10px 12px;
+      border-radius: 10px;
+      margin-bottom: 8px;
+      border: 1px solid #ffccd5;
+      cursor: pointer;
+      font-weight: 500;
+      color: #333;
+    }
+
+    .mcq-option input {
+      accent-color: #ff4d6d;
+      margin-right: 8px;
+      transform: scale(1.15);
+    }
+
+    .disclaimer {
+      font-size: 0.82rem;
+      color: #666;
+      font-style: italic;
+      background: #f8f9fa;
+      padding: 10px;
+      border-radius: 10px;
+      margin: 15px 0;
+      border: 1px dashed #ffb3c1;
+    }
+
+    .nav-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .action-btn {
+      flex: 1;
+      padding: 14px 20px;
+      font-size: 1.05rem;
+      font-weight: bold;
+      background-color: #ff4d6d;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(255, 77, 109, 0.25);
+      transition: transform 0.2s;
+    }
+
+    .action-btn:hover {
+      transform: scale(1.03);
+    }
+
+    .back-btn {
+      background-color: #adb5bd;
+      box-shadow: none;
+      flex: 0.45;
+    }
+
+    .insta-btn {
+      display: block;
+      margin-top: 12px;
+      background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    }
+
+    .summary-box {
+      background: #fff0f3;
+      border: 1px solid #ffccd5;
+      border-radius: 12px;
+      padding: 12px;
+      text-align: left;
+      font-size: 0.9rem;
+      color: #333;
+      white-space: pre-line;
+      margin-bottom: 12px;
+      max-height: 190px;
+      overflow-y: auto;
+    }
+
+    .kiss-animation {
+      font-size: 2.6rem;
+      animation: kissBounce 1.5s infinite ease-in-out;
+    }
+
+    .big-kiss {
+      font-size: 3.8rem;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes kissBounce {
+      0%, 100% { transform: scale(1) rotate(0deg); }
+      25% { transform: scale(1.2) rotate(-8deg); }
+      50% { transform: scale(1.3) rotate(8deg); }
+      75% { transform: scale(1.15) rotate(-4deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <audio id="bgMusic" loop>
+    <source src="https://mixkit.co" type="audio/mpeg">
+  </audio>
+
+  <div class="container">
+    <!-- STAGE 0: THE PROPOSAL -->
+    <div id="proposalStage">
+      <div id="heartContainer">❤️</div>
+      <h1 id="question">WOULD YOU LIKE TO BE MY GIRL FRIEND?</h1>
+      <div class="buttons">
+        <button id="yesBtn">YES</button>
+        <button id="noBtn">NO</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 1: SECTION 1 - BASIC INFORMATION (PART 1) -->
+    <div id="slide1" class="hidden">
+      <div class="kiss-animation">💋 😘 💋</div>
+      <h1>GIRLFRIEND APLICATION</h1>
+      <div class="slide-badge">Slide 1 of 3 • Section 1: Basic Info</div>
+
+      <div class="form-group">
+        <label for="fullName">Full name:</label>
+        <input type="text" id="fullName" placeholder="Enter your full name...">
+      </div>
+
+      <div class="form-group">
+        <label for="age">Age:</label>
+        <input type="number" id="age" placeholder="Your age...">
+      </div>
+
+      <div class="form-group">
+        <label for="location">Location:</label>
+        <input type="text" id="location" placeholder="e.g., Kiambu, Ruiru, Nairobi...">
+      </div>
+
+      <div class="form-group">
+        <label for="nickname">Nickname you'd like me to use:</label>
+        <input type="text" id="nickname" placeholder="Babe, Shawty, Queen...">
+      </div>
+
+      <div class="nav-row">
+        <button type="button" class="action-btn" onclick="goToSlide(2)">NEXT SLIDE ➡️</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: SECTION 1 - BASIC INFORMATION (PART 2) -->
+    <div id="slide2" class="hidden">
+      <div class="kiss-animation">😘 💋 😘</div>
+      <h1>GIRLFRIEND APLICATION</h1>
+      <div class="slide-badge">Slide 2 of 3 • Section 1: Vibe Check</div>
+
+      <div class="form-group">
+        <label for="instaUser">Instagram username:</label>
+        <input type="text" id="instaUser" placeholder="@yourusername">
+      </div>
+
+      <div class="form-group">
+        <label for="relStatus">Relationship status:</label>
+        <select id="relStatus">
+          <option value="Single & ready for you">Single & ready for you</option>
+          <option value="Basically yours already">Basically yours already</option>
+          <option value="Applying for the position">Applying for the position</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="loveLang">What's your preferred love language?</label>
+        <select id="loveLang">
+          <option value="Quality Time">Quality Time</option>
+          <option value="Physical Touch">Physical Touch</option>
+          <option value="Words of Affirmation">Words of Affirmation</option>
+          <option value="Receiving Gifts">Receiving Gifts</option>
+          <option value="Acts of Service">Acts of Service</option>
+          <option value="All of the above">All of the above</option>
+        </select>
+      </div>
+
+      <div class="nav-row">
+        <button type="button" class="action-btn back-btn" onclick="goToSlide(1)">⬅️ BACK</button>
+        <button type="button" class="action-btn" onclick="goToSlide(3)">NEXT SLIDE ➡️</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: BONUS MANDATORY MCQ & DISCLAIMER -->
+    <div id="slide3" class="hidden">
+      <div class="kiss-animation">💋 🥰 💋</div>
+      <h1>GIRLFRIEND APLICATION</h1>
+      <div class="slide-badge">Slide 3 of 3 • Bonus Mandatory Question</div>
+
+      <div class="mcq-box">
+        <p>33. Your boyfriend hasn't replied for 2 hours. You:</p>
+        <label class="mcq-option"><input type="radio" name="q33" value="A. Continue with my day." checked> A. Continue with my day.</label>
+        <label class="mcq-option"><input type="radio" name="q33" value="B. Send a meme."> B. Send a meme.</label>
+        <label class="mcq-option"><input type="radio" name="q33" value="C. Check if he's alive."> C. Check if he's alive.</label>
+        <label class="mcq-option"><input type="radio" name="q33" value="D. Start planning our breakup."> D. Start planning our breakup.</label>
+      </div>
+
+      <div class="disclaimer">
+        <strong>Application disclaimer:</strong> Submission does not guarantee employment. The recruitment manager reserves the right to be dramatic.
+      </div>
+
+      <div class="nav-row">
+        <button type="button" class="action-btn back-btn" onclick="goToSlide(2)">⬅️ BACK</button>
