@@ -353,4 +353,155 @@
         <button type="button" id="submitAppBtn" class="action-btn">SUBMIT APLICATION 💌</button>
       </div>
     </div>
+    <!-- FINAL STAGE: RESULTS & INSTAGRAM DM -->
+    <div id="finalStage" class="hidden">
+      <div class="kiss-animation big-kiss">😘💋❤️</div>
+      <h1>APLICATION RECEIVED!</h1>
+      <p style="color:#444; font-size:0.95rem;">Tap below to copy your answers and send them straight to my Instagram DMs:</p>
+      <div id="resultsPreview" class="summary-box"></div>
+      <button type="button" id="copyAndChatBtn" class="action-btn insta-btn">COPY & SEND ON INSTAGRAM 💬</button>
+      <p id="copyFeedback" style="color:#ff4d6d; font-weight:bold; font-size:0.9rem; margin-top:10px;"></p>
+    </div>
+  </div>
+
+  <script>
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const question = document.getElementById('question');
+    const bgMusic = document.getElementById('bgMusic');
+
+    const proposalStage = document.getElementById('proposalStage');
+    const slide1 = document.getElementById('slide1');
+    const slide2 = document.getElementById('slide2');
+    const slide3 = document.getElementById('slide3');
+    const finalStage = document.getElementById('finalStage');
+
+    let yesScale = 1;
+    let noScale = 1;
+    let noShift = 14;
+    let musicStarted = false;
+    let formattedResults = "";
+
+    const phrases = [
+      "ARE YOU SURE? 🥺",
+      "THINK AGAIN! 👀",
+      "PRETTY PLEASE? 💞",
+      "WRONG BUTTON! ❌",
+      "YOU DON'T MEAN THAT! 😭",
+      "MAYBE RE-READ THE OPTION? 🤔"
+    ];
+    let phraseIndex = 0;
+
+    function startMusic() {
+      if (!musicStarted) {
+        bgMusic.play().then(() => { musicStarted = true; }).catch(() => {});
+      }
+    }
+
+    function fireConfetti(durationSeconds) {
+      if (typeof confetti !== 'function') return;
+      const end = Date.now() + (durationSeconds * 1000);
+      (function frame() {
+        confetti({ particleCount: 6, angle: 60, spread: 60, origin: { x: 0, y: 0.8 } });
+        confetti({ particleCount: 6, angle: 120, spread: 60, origin: { x: 1, y: 0.8 } });
+        if (Date.now() < end) requestAnimationFrame(frame);
+      }());
+    }
+
+    noBtn.addEventListener('click', () => {
+      startMusic();
+      question.innerHTML = phrases[phraseIndex];
+      phraseIndex = (phraseIndex + 1) % phrases.length;
+
+      yesScale += 0.35;
+      yesBtn.style.transform = `scale(${yesScale})`;
+      
+      noScale -= 0.12;
+      noBtn.style.transform = `scale(${noScale})`;
+      
+      if (noShift > 2) {
+        noShift -= 3;
+        noBtn.style.right = `${noShift}%`;
+      }
+      if (noScale <= 0.2) noBtn.style.display = 'none';
+    });
+
+    yesBtn.addEventListener('click', () => {
+      startMusic();
+      proposalStage.classList.add('hidden');
+      slide1.classList.remove('hidden');
+      fireConfetti(3);
+    });
+
+    function showSlide(num) {
+      slide1.classList.add('hidden');
+      slide2.classList.add('hidden');
+      slide3.classList.add('hidden');
+      document.getElementById('slide' + num).classList.remove('hidden');
+    }
+
+    document.getElementById('nextSlide2Btn').addEventListener('click', () => {
+      const name = document.getElementById('fullName').value.trim();
+      const age = document.getElementById('age').value.trim();
+      const loc = document.getElementById('location').value.trim();
+      const nick = document.getElementById('nickname').value.trim();
+      if (!name || !age || !loc || !nick) {
+        alert("Please fill in all fields on Slide 1 first! 😘");
+        return;
+      }
+      showSlide(2);
+    });
+
+    document.getElementById('backSlide1Btn').addEventListener('click', () => showSlide(1));
+
+    document.getElementById('nextSlide3Btn').addEventListener('click', () => {
+      const insta = document.getElementById('instaUser').value.trim();
+      if (!insta) {
+        alert("Don't forget to enter your Instagram username! 💕");
+        return;
+      }
+      showSlide(3);
+    });
+
+    document.getElementById('backSlide2Btn').addEventListener('click', () => showSlide(2));
+
+    document.getElementById('submitAppBtn').addEventListener('click', () => {
+      const fullName = document.getElementById('fullName').value.trim();
+      const age = document.getElementById('age').value.trim();
+      const location = document.getElementById('location').value.trim();
+      const nickname = document.getElementById('nickname').value.trim();
+      const instaUser = document.getElementById('instaUser').value.trim();
+      const relStatus = document.getElementById('relStatus').value;
+      const loveLang = document.getElementById('loveLang').value;
+      const q33 = document.querySelector('input[name="q33"]:checked').value;
+
+      formattedResults = 
+        `💌 GIRLFRIEND APPLICATION RESULTS 💌\n` +
+        `• Full Name: ${fullName}\n` +
+        `• Age: ${age}\n` +
+        `• Location: ${location}\n` +
+        `• Nickname: ${nickname}\n` +
+        `• Instagram: ${instaUser}\n` +
+        `• Status: ${relStatus}\n` +
+        `• Love Language: ${loveLang}\n` +
+        `• Q33 (2hr no reply): ${q33}`;
+
+      document.getElementById('resultsPreview').textContent = formattedResults;
+      slide3.classList.add('hidden');
+      finalStage.classList.remove('hidden');
+      fireConfetti(6);
+    });
+
+    document.getElementById('copyAndChatBtn').addEventListener('click', () => {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(formattedResults).catch(() => {});
+      }
+      document.getElementById('copyFeedback').textContent = "Copied! Opening @a_l_m_a_g_e_s_t on Instagram...";
+      setTimeout(() => {
+        window.open("https://ig.me", "_blank");
+      }, 600);
+    });
+  </script>
+</body>
+</html>
 
