@@ -47,12 +47,6 @@
       text-transform: uppercase;
     }
 
-    h2 {
-      color: #c9184a;
-      font-size: 1.2rem;
-      margin: 0 0 15px 0;
-    }
-
     .slide-badge {
       display: inline-block;
       background: #ffe5ec;
@@ -61,7 +55,7 @@
       font-size: 0.85rem;
       padding: 5px 14px;
       border-radius: 20px;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
     }
 
     .buttons {
@@ -208,6 +202,7 @@
 
     .insta-btn {
       display: block;
+      width: 100%;
       margin-top: 12px;
       background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
     }
@@ -293,7 +288,7 @@
       </div>
 
       <div class="nav-row">
-        <button type="button" class="action-btn" onclick="goToSlide(2)">NEXT SLIDE ➡️</button>
+        <button type="button" id="nextSlide2Btn" class="action-btn">NEXT SLIDE ➡️</button>
       </div>
     </div>
 
@@ -330,8 +325,8 @@
       </div>
 
       <div class="nav-row">
-        <button type="button" class="action-btn back-btn" onclick="goToSlide(1)">⬅️ BACK</button>
-        <button type="button" class="action-btn" onclick="goToSlide(3)">NEXT SLIDE ➡️</button>
+        <button type="button" id="backSlide1Btn" class="action-btn back-btn">⬅️ BACK</button>
+        <button type="button" id="nextSlide3Btn" class="action-btn">NEXT SLIDE ➡️</button>
       </div>
     </div>
 
@@ -354,4 +349,8 @@
       </div>
 
       <div class="nav-row">
-        <button type="button" class="action-btn back-btn" onclick="goToSlide(2)">⬅️ BACK</button>
+        <button type="button" id="backSlide2Btn" class="action-btn back-btn">⬅️ BACK</button>
+        <button type="button" id="submitAppBtn" class="action-btn">SUBMIT APLICATION 💌</button>
+      </div>
+    </div>
+
